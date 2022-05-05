@@ -2,9 +2,7 @@ name: Release from Master
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [ staging ]
 
 jobs:
   build:

@@ -1,4 +1,4 @@
-name: Release from Master
+name: Release from Production
 
 on:
   push:

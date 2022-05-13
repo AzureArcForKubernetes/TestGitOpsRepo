@@ -1,0 +1,31 @@
+name: Release from Staging
+
+on:
+  push:
+    branches: [ staging ]
+
+jobs:
+  batch-1:
+    runs-on: ubuntu-latest
+    environment: batch-1
+    steps:
+      - uses: actions/checkout@v3
+      - name: Merge staging -> production
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          target_branch: production 
+          github_token: ${{ github.token }}
+  batch-2:
+    runs-on: ubuntu-latest
+    environment: batch-2
+    needs: batch-1
+    steps:
+      - uses: actions/checkout@v3
+      - name: Merge batch-1 -> production
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: production
+          target_branch: production-2 
+          github_token: ${{ github.token }}

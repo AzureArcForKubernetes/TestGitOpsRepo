@@ -9,8 +9,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - run: |
+          echo "${{ github.sha }}" > ORIGIN_COMMIT_SHA
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git checkout -b deploy
+          git add ORIGIN_COMMIT_SHA
+          git commit -m "Track ${{ github.sha }}"
+          git push --set-upstream origin deploy --force
       - name: Create a Pull Request
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: staging
           github_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: hkusu/status-create-action@v1
+        with:
+          sha: ${{ github.sha }}
+          state: pending
+          target-url: http://ci.example.com
+          description: Rollout to Staging environment
+          context: Staging

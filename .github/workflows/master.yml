@@ -22,10 +22,3 @@ jobs:
         with:
           destination_branch: staging
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: hkusu/status-create-action@v1
-        with:
-          sha: ${{ github.sha }}
-          state: pending
-          target-url: http://ci.example.com
-          description: Rollout to Staging environment
-          context: Staging
